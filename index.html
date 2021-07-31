@@ -34,7 +34,7 @@
   <div id="app">
 
     <p>
-      站點名稱搜尋: <input type="text">
+      站點名稱搜尋: <input type="text" v-model = "stopName">
     </p>
 
     <table class="table table-striped">
@@ -56,7 +56,7 @@
       </thead>
       <tbody>
         <!-- 請補完 -->
-        <tr v-for = "s in uBikeStops">
+        <tr v-for = "s in searchStop">
           <td>{{ s.sno }}</td>
           <td>{{ s.sna }}</td>
           <td>{{ s.sarea }}</td>
@@ -83,7 +83,8 @@
     const app = Vue.createApp({
       data () {
         return {
-          uBikeStops: []
+          uBikeStops: [],
+          stopName:"",
         }
       },
       created () {
@@ -93,6 +94,13 @@
               const stops = Object.keys(json.retVal).map(key => json.retVal[key]);
               this.uBikeStops = stops;
             });
+      },
+      computed:{
+        searchStop(){
+          return this.stopName ? 
+          this.uBikeStops.filter((item) => item.sna.includes(this.stopName)):this.uBikeStops;
+
+        }
       }
     }).mount('#app');
   </script>
